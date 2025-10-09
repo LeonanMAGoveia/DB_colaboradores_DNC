@@ -19,7 +19,7 @@ class CreateClientController {
       return res.status(201).json(user);
     } catch (error) {
       // Retorna o erro com status 400
-      return res.status(400).json({ error: error.message });
+      return res.status(400).json({ error: "Email já cadastrado" });
     }
   }
 }
