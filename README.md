@@ -39,27 +39,39 @@ A API oferece os seguintes endpoints de gestão para o recurso /api/colaboradore
 (a verificar)
 
 Método HTTP Endpoint Descrição
-POST /api/colaboradores Cadastra um novo colaborador.
-GET /api/colaboradores Lista todos os colaboradores cadastrados.
-GET /api/colaboradores/:id Retorna os detalhes de um colaborador específico.
-PUT /api/colaboradores/:id Atualiza todas as informações de um colaborador.
-DELETE /api/colaboradores/:id Exclui um colaborador do sistema.
+POST /api/colaboradores Cadastra um novo colaborador.                                                                                                                                                          
 
-Exportar para Sheets
+GET /api/colaboradores Lista todos os colaboradores cadastrados.
+
+GET /api/colaboradores/:id Retorna os detalhes de um colaborador específico.
+
+PUT /api/colaboradores/:id Atualiza todas as informações de um colaborador.
+
+DELETE /api/colaboradores/:id Exclui um colaborador do sistema.
 
 🗂️ Estrutura de Arquivos
 
 O projeto segue o padrão Controller/Service para melhor organização e separação de responsabilidades:
 
 DB_COLABORADORES_DNC/
+
 ├── prisma/
+
 │ └── schema.prisma # Definição do modelo de dados
+
 ├── src/
+
 │ ├── controller/ # Lógica de processamento das requisições HTTP.
+
 │ ├── service/ # Lógica de negócio e manipulação de dados via Prisma.
+
 │ ├── prisma.js # Configuração do cliente Prisma.
+
 │ ├── router.js # Definição das rotas da API.
+
 │ └── server.js # Ponto de entrada e inicialização do servidor Express.
+
 ├── .env # Variáveis de ambiente
+
 └── package.json # Dependências e scripts
-🤝 Contribuição
+
