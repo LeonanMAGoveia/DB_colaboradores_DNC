@@ -1,4 +1,4 @@
-import { AuthUserService } from "../service/AuthUserService.js";
+import { AuthUserService } from "../../service/user/AuthUserService.js";
 
 class AuthUserController {
   async handle(req, res) {

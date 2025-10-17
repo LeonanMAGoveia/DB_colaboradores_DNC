@@ -1,8 +1,13 @@
 import { Router } from "express";
 
-// controller
-import { CreateClientController } from "./controller/CreateClientController.js";
-import { AuthUserController } from "./controller/AuthUserController.js";
+// USUÁRIO
+import { CreateClientController } from "./controller/user/CreateClientController.js";
+
+// COLABORADORES
+import { CreateColaboradorController } from "./controller/Colaborador/CreateColaboradorController.js";
+
+//LOGIN
+import { AuthUserController } from "./controller/user/AuthUserController.js";
 
 //CREDENCIAIS DE ADMIN
 import { isAuthenticated } from "./middlewares/isAuthenticated.js";
@@ -11,13 +16,17 @@ import { isAdmin } from "./middlewares/isAdmin.js";
 // Importante criar uma instância do Router
 const router = Router();
 
-// Rota para criar um usuário
+//Rota
+router.post("/clientes", new CreateClientController().handle);
+
+router.post("/login", new AuthUserController().handle);
+
+// Rota para criação de colaborador, apenas o admin pode fazer isso, pois esta com proteção
 router.post(
-  "/user",
+  "/colaboradores",
   isAuthenticated,
   isAdmin,
-  new CreateClientController().handle
+  new CreateColaboradorController().handle
 );
-router.post("/login", new AuthUserController().handle);
 
 export default router;

@@ -1,7 +1,7 @@
-import prismaClient from "../prisma.js";
+import prismaClient from "../../prisma.js";
 import { compare } from "bcryptjs";
 import pkg from "jsonwebtoken";
-import { AppError } from "../middlewares/errorHandler.js";
+import { AppError } from "../../middlewares/errorHandler.js";
 
 const { sign } = pkg;
 
