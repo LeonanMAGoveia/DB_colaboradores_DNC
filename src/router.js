@@ -20,4 +20,4 @@ router.post(
 );
 router.post("/login", new AuthUserController().handle);
 
-export default router; // Não se esqueça de exportar o router!
+export default router;

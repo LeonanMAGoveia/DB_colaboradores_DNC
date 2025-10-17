@@ -4,17 +4,9 @@ class AuthUserController {
   async handle(req, res) {
     const { email, password } = req.body;
     const authUserService = new AuthUserService();
+    const auth = await authUserService.execute({ email, password });
 
-    // CORREÇÃO 2: Adicionado o try...catch
-    try {
-      const auth = await authUserService.execute({
-        email,
-        password,
-      });
-      return res.json(auth);
-    } catch (error) {
-      return res.status(401).json({ error: error.message });
-    }
+    return res.json(auth);
   }
 }
 

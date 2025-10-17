@@ -1,12 +1,13 @@
 import { hash } from "bcryptjs";
 import prismaClient from "../prisma.js";
+import { AppError } from "../middlewares/errorHandler.js";
 
 class CreateClientService {
   //faz a criação do usuário
   async execute(userData) {
     const { name, cpf, email, password, role, ...optionalData } = userData;
     if (!email || !cpf || !name || !password) {
-      throw new Error("Name, CPF, Email e Senha são obrigatórios");
+      throw new AppError("Name, CPF, Email e Senha são obrigatórios");
     }
 
     // faz a procura para ver ser tem email cadastrado no banco de dados
@@ -20,10 +21,10 @@ class CreateClientService {
     if (userAlreadyExists) {
       // Se existe, agora sim podemos verificar o motivo
       if (userAlreadyExists.email === email) {
-        throw new Error("Email já está cadastrado");
+        throw new AppError("Email já está cadastrado");
       }
       if (userAlreadyExists.cpf === cpf) {
-        throw new Error("CPF já está cadastrado");
+        throw new AppError("CPF já está cadastrado");
       }
     }
 

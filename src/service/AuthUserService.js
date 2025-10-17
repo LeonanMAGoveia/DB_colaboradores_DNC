@@ -1,6 +1,7 @@
 import prismaClient from "../prisma.js";
 import { compare } from "bcryptjs";
 import pkg from "jsonwebtoken";
+import { AppError } from "../middlewares/errorHandler.js";
 
 const { sign } = pkg;
 
@@ -11,18 +12,18 @@ class AuthUserService {
     });
 
     if (!user) {
-      throw new Error("Usuário ou senha incorreto");
+      throw new AppError("Usuário ou senha incorreto");
     }
 
     const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch) {
-      throw new Error("Usuário ou senha incorreto");
+      throw new AppError("Usuário ou senha incorreto");
     }
 
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-      throw new Error("Erro interno do servidor: Chave JWT não configurada.");
+      throw new AppError("Erro interno do servidor");
     }
 
     const token = sign({ name: user.name, email: user.email }, secret, {
