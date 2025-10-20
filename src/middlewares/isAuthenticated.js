@@ -1,5 +1,5 @@
 import pkg from "jsonwebtoken";
-import { AppError } from "./errorHandler.js"; // <-- Importe o AppError
+import { AppError } from "./errorHandler.js";
 
 const { verify } = pkg;
 
@@ -18,7 +18,6 @@ export function isAuthenticated(req, res, next) {
     req.user_id = sub;
     return next();
   } catch (error) {
-    // DEPOIS: Lança um erro 401
     throw new AppError("Token inválido.", 401);
   }
 }

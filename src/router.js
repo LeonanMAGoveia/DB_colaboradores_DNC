@@ -5,6 +5,7 @@ import { CreateClientController } from "./controller/user/CreateClientController
 
 // COLABORADORES
 import { CreateColaboradorController } from "./controller/Colaborador/CreateColaboradorController.js";
+import { DeleteColaboradorController } from "./controller/Colaborador/DeleteColaboradorController.js";
 
 //LOGIN
 import { AuthUserController } from "./controller/user/AuthUserController.js";
@@ -16,17 +17,23 @@ import { isAdmin } from "./middlewares/isAdmin.js";
 // Importante criar uma instância do Router
 const router = Router();
 
-//Rota
+//LOGIN
 router.post("/clientes", new CreateClientController().handle);
 
 router.post("/login", new AuthUserController().handle);
 
-// Rota para criação de colaborador, apenas o admin pode fazer isso, pois esta com proteção
+// Rota de colaborador, apenas o admin pode fazer isso, pois esta com proteção.
 router.post(
   "/colaboradores",
   isAuthenticated,
   isAdmin,
   new CreateColaboradorController().handle
+);
+router.delete(
+  "/colaboradores/:id",
+  isAuthenticated,
+  isAdmin,
+  new DeleteColaboradorController().handle
 );
 
 export default router;

@@ -29,7 +29,7 @@ class CreateColaboradorService {
     // Antes de criar ele vai verificar se tem email ou cpf já cadastrado para não haver duplicidade.
     const emailExists = await this.colaboradorRepository.findByEmail(email);
     if (emailExists) {
-      throw new AppError("Este email já está cadastrado.", 409);
+      throw new AppError("Colaborador já cadastrado.", 409);
     }
 
     const cpfExists = await this.colaboradorRepository.findByCpf(cpf);

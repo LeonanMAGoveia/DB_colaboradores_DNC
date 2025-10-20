@@ -26,7 +26,20 @@ class ColaboradorRepository {
       },
     });
   }
+
+  //DELETE
+  //aqui ele vai procurar o coloborador pelo seu id
+  async findById(id) {
+    return await prismaClient.colaborador.findUnique({
+      where: { id: id },
+    });
+  }
+
+  async deleteById(id) {
+    return await prismaClient.colaborador.delete({
+      where: { id: id },
+    });
+  }
 }
 
-// A MUDANÇA ESTÁ AQUI: Usamos "export { ... }" para exportar a classe com seu nome.
 export { ColaboradorRepository };

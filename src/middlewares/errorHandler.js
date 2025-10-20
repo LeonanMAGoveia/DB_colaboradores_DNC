@@ -10,7 +10,7 @@ class AppError {
 
 // O middleware que vai capturar e tratar todos os erros
 const errorHandler = (error, request, response, next) => {
-  console.error(error); // Ótimo para debugar
+  console.error(error);
 
   if (error instanceof AppError) {
     return response.status(error.statusCode).json({
