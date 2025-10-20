@@ -6,6 +6,7 @@ import { CreateClientController } from "./controller/user/CreateClientController
 // COLABORADORES
 import { CreateColaboradorController } from "./controller/Colaborador/CreateColaboradorController.js";
 import { DeleteColaboradorController } from "./controller/Colaborador/DeleteColaboradorController.js";
+import { ListColaboradorController } from "./controller/Colaborador/ListColaboradorController.js";
 
 //LOGIN
 import { AuthUserController } from "./controller/user/AuthUserController.js";
@@ -34,6 +35,12 @@ router.delete(
   isAuthenticated,
   isAdmin,
   new DeleteColaboradorController().handle
+);
+router.get(
+  "/colaboradores",
+  isAuthenticated,
+  isAdmin,
+  new ListColaboradorController().handle
 );
 
 export default router;

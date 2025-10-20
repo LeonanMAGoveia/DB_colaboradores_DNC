@@ -40,6 +40,20 @@ class ColaboradorRepository {
       where: { id: id },
     });
   }
+
+  //PROCURAR COLABORADORES
+  async findAll() {
+    return await prismaClient.colaborador.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        cargo: true,
+        status: true,
+      },
+    });
+  }
 }
 
 export { ColaboradorRepository };
