@@ -41,9 +41,25 @@ class ColaboradorRepository {
     });
   }
 
-  //PROCURAR COLABORADORES
+  //PROCURAR POR COLABORADORES
   async findAll() {
     return await prismaClient.colaborador.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        cargo: true,
+        status: true,
+      },
+    });
+  }
+
+  // ATUALIZAR DADOS
+  async update(id, data) {
+    return await prismaClient.colaborador.update({
+      where: { id: id },
+      data: data,
       select: {
         id: true,
         name: true,

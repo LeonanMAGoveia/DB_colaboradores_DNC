@@ -7,6 +7,7 @@ import { CreateClientController } from "./controller/user/CreateClientController
 import { CreateColaboradorController } from "./controller/Colaborador/CreateColaboradorController.js";
 import { DeleteColaboradorController } from "./controller/Colaborador/DeleteColaboradorController.js";
 import { ListColaboradorController } from "./controller/Colaborador/ListColaboradorController.js";
+import { UpdateColaboradorController } from "./controller/Colaborador/UpdateColaboradorController.js";
 
 //LOGIN
 import { AuthUserController } from "./controller/user/AuthUserController.js";
@@ -41,6 +42,13 @@ router.get(
   isAuthenticated,
   isAdmin,
   new ListColaboradorController().handle
+);
+
+router.patch(
+  "/colaboradores/:id",
+  isAuthenticated,
+  isAdmin,
+  new UpdateColaboradorController().handle
 );
 
 export default router;
