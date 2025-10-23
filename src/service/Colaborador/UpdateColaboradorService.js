@@ -29,6 +29,10 @@ class UpdateColaboradorService {
       dadosFiltrados.cargo = dataToUpdate.cargo;
     }
 
+    if (dataToUpdate.endereco !== undefined) {
+      dadosFiltrados.endereco = dataToUpdate.endereco;
+    }
+
     if (dataToUpdate.telefone !== undefined) {
       dadosFiltrados.telefone = dataToUpdate.telefone;
     }

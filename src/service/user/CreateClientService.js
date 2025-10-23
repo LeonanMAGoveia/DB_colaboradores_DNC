@@ -1,34 +1,57 @@
-import { hash } from "bcryptjs";
+// src/service/user/AuthUserService.js
+import prismaClient from "../../prisma.js";
+import { compare } from "bcryptjs";
+import pkg from "jsonwebtoken";
 import { AppError } from "../../middlewares/errorHandler.js";
-import { UserRepository } from "../../repositories/UserRepository.js";
-class CreateClientService {
-  constructor() {
-    this.userRepository = new UserRepository();
-  }
 
-  async execute(userData) {
-    const { name, email, password } = userData;
-    if (!name || !email || !password) {
-      throw new AppError("Nome, email e senha são obrigatórios.", 400);
-    }
+const { sign } = pkg;
 
-    const userAlreadyExists = await this.userRepository.findByEmail(email);
-
-    if (userAlreadyExists) {
-      throw new AppError("Este email já está cadastrado.", 409);
-    }
-
-    const passwordHash = await hash(password, 8);
-
-    const user = await this.userRepository.create({
-      name,
-      email,
-      password: passwordHash,
-      role: "CLIENTE",
+class AuthUserService {
+  async execute({ email, password }) {
+    let user = await prismaClient.colaborador.findUnique({
+      where: { email: email },
     });
 
-    return user;
+    if (!user) {
+      user = await prismaClient.user.findUnique({
+        where: { email: email },
+      });
+    }
+
+    if (!user) {
+      throw new AppError("Usuário ou senha incorreto", 401);
+    }
+
+    const passwordMatch = await compare(password, user.password);
+    if (!passwordMatch) {
+      throw new AppError("Usuário ou senha incorreto", 401);
+    }
+
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      throw new AppError(
+        "Erro interno do servidor: Chave JWT não configurada",
+        500
+      );
+    }
+
+    const token = sign(
+      { name: user.name, email: user.email, role: user.role },
+      secret,
+      {
+        subject: user.id,
+        expiresIn: "1d",
+      }
+    );
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      token: token,
+    };
   }
 }
 
-export { CreateClientService };
+export { AuthUserService };

@@ -4,7 +4,7 @@ import { AppError } from "./errorHandler.js";
 export async function isAdmin(req, res, next) {
   const user_id = req.user_id;
 
-  const user = await prismaClient.user.findUnique({
+  const admin = await prismaClient.colaborador.findUnique({
     where: { id: user_id },
   });
 

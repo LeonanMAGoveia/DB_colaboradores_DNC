@@ -1,43 +1,22 @@
-import prismaClient from "../../prisma.js";
-import { compare } from "bcryptjs";
 import pkg from "jsonwebtoken";
-import { AppError } from "../../middlewares/errorHandler.js";
+import { AppError } from "./errorHandler.js";
 
-const { sign } = pkg;
+const { verify } = pkg;
 
-class AuthUserService {
-  async execute({ email, password }) {
-    const user = await prismaClient.user.findUnique({
-      where: { email: email },
-    });
+export function isAuthenticated(req, res, next) {
+  const authToken = req.headers.authorization || req.headers.Authorization;
 
-    if (!user) {
-      throw new AppError("Usuário ou senha incorreto");
-    }
+  if (!authToken) {
+    throw new AppError("Token não fornecido.", 401);
+  }
 
-    const passwordMatch = await compare(password, user.password);
+  const [, token] = authToken.split(" ");
 
-    if (!passwordMatch) {
-      throw new AppError("Usuário ou senha incorreto");
-    }
-
-    const secret = process.env.JWT_SECRET;
-    if (!secret) {
-      throw new AppError("Erro interno do servidor");
-    }
-
-    const token = sign({ name: user.name, email: user.email }, secret, {
-      subject: user.id,
-      expiresIn: "1d",
-    });
-
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      token: token,
-    };
+  try {
+    const { sub } = verify(token, process.env.JWT_SECRET);
+    req.user_id = sub;
+    return next();
+  } catch (error) {
+    throw new AppError("Token inválido.", 401);
   }
 }
-
-export { AuthUserService };
