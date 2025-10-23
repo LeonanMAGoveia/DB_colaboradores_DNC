@@ -36,62 +36,62 @@ Middleware dedicado para respostas padronizadas e controle de exceções.
 Estruturada em Controllers, Services e Repositories.
 
 🛠️ Tecnologias Utilizadas
-Categoria Tecnologias
-Linguagem / Runtime Node.js
-Framework Express.js
-Banco de Dados MySQL
-ORM Prisma
-Autenticação JWT (jsonwebtoken), bcryptjs
-Utilitários express-async-errors, cors, dotenv
-Gerenciador de Pacotes Yarn
+Categoria Tecnologias <br>
+Linguagem / Runtime Node.js<br>
+Framework Express.js<br>
+Banco de Dados MySQL<br>
+ORM Prisma<br>
+Autenticação JWT (jsonwebtoken), bcryptjs<br>
+Utilitários express-async-errors, cors, dotenv<br>
+Gerenciador de Pacotes Yarn<br>
 🗄️ Estrutura do Banco de Dados (Prisma)
 
 A modelagem foi feita com o Prisma ORM, conforme o arquivo schema.prisma:
 
-enum Role {
-ADMIN
-COLABORADOR
-CLIENTE
-}
+enum Role {<br>
+ADMIN<br>
+COLABORADOR<br>
+CLIENTE<br>
+}<br>
 
-model User {
-id String @id @default(uuid())
-name String
-email String @unique
-password String
-phone String?
-role Role @default(CLIENTE)
-createdAt DateTime @default(now()) @map("created_at")
-updatedAt DateTime @updatedAt @map("updated_at")
+model User {<br>
+id String @id @default(uuid())<br>
+name String<br>
+email String @unique<br>
+password String<br>
+phone String?<br>
+role Role @default(CLIENTE)<br>
+createdAt DateTime @default(now()) @map("created_at")<br>
+updatedAt DateTime @updatedAt @map("updated_at")<br>
 
-passwordResetToken String?
-passwordResetExpires DateTime?
+passwordResetToken String?<br>
+passwordResetExpires DateTime?<br>
 
-@@map("users")
-}
+@@map("users")<br>
+}<br>
 
-model Colaborador {
-id String @id @default(uuid())
-name String
-cpf String @unique
-email String @unique
-password String
-avatar String?
-role Role @default(COLABORADOR)
-telefone String?
-cargo String?
-dataAdmissao DateTime?
-salario Float?
-status String? @default("ativo")
-endereco String?
-cidade String?
-estado String?
-cep String?
-createdAt DateTime @default(now()) @map("created_at")
-updatedAt DateTime @updatedAt @map("updated_at")
+model Colaborador {<br>
+id String @id @default(uuid())<br>
+name String<br>
+cpf String @unique<br>
+email String @unique<br>
+password String<br>
+avatar String?<br>
+role Role @default(COLABORADOR)<br>
+telefone String?<br>
+cargo String?<br>
+dataAdmissao DateTime?<br>
+salario Float?<br>
+status String? @default("ativo")<br>
+endereco String?<br>
+cidade String?<br>
+estado String?<br>
+cep String?<br>
+createdAt DateTime @default(now()) @map("created_at")<br>
+updatedAt DateTime @updatedAt @map("updated_at")<br>
 
-@@map("colaboradores")
-}
+@@map("colaboradores")<br>
+}<br>
 
 ⚙️ Como Executar o Projeto Localmente
 
@@ -124,21 +124,21 @@ yarn dev
 💡 A API será executada em:
 http://localhost:3000
 
-🔒 Rotas Principais
-Método Rota Descrição
-POST /register Cadastro de cliente
-POST /login Autenticação (JWT)
-POST /colaboradores Cadastro de colaborador (admin)
-GET /colaboradores Listagem de colaboradores
-PUT /colaboradores/:id Atualização de dados
-DELETE /colaboradores/:id Remoção de colaborador
+🔒 Rotas Principais<br>
+Método Rota Descrição<br>
+POST /register Cadastro de cliente<br>
+POST /login Autenticação (JWT)<br>
+POST /colaboradores Cadastro de colaborador (admin)<br>
+GET /colaboradores Listagem de colaboradores<br>
+PUT /colaboradores/:id Atualização de dados<br>
+DELETE /colaboradores/:id Remoção de colaborador<br>
 📦 Estrutura de Pastas (Exemplo)
-src/
-├─ controllers/
-├─ services/
-├─ repositories/
-├─ middlewares/
-├─ routes/
-├─ prisma/
-├─ server.js
-└─ app.js
+src/<br>
+├─ controllers/<br>
+├─ services/ <br>
+├─ repositories/<br>
+├─ middlewares/<br>
+├─ routes/<br>
+├─ prisma/<br>
+├─ server.js<br>
+└─ app.js<br>
