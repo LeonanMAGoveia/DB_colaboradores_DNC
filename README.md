@@ -1,79 +1,144 @@
-# API de Gestão de Colaboradores - Projeto DNC
+👥 API de Gestão de Colaboradores — Projeto DNC
+🧩 Sobre o Projeto
 
-## 📝 Sobre o Projeto
+Esta API RESTful foi desenvolvida como parte do desafio do curso DNC, com o objetivo de oferecer uma solução prática e centralizada para o cadastro e gerenciamento de colaboradores e clientes.
+Ela substitui processos manuais e descentralizados, garantindo segurança, automação e controle de acesso baseado em perfis (roles).
 
-Esta API REST foi desenvolvida como parte do desafio do curso DNC. O objetivo principal é fornecer uma solução centralizada e automatizada para o cadastro e controle de colaboradores e clientes, substituindo processos descentralizados e manuais.
+🔗 Acesse a API online:
+https://db-colaboradores-dnc.onrender.com
 
-A API permite o cadastro, consulta, atualização e exclusão de informações, com controle de acesso baseado em roles (funções), garantindo segurança e integridade dos dados.
+✨ Funcionalidades
 
-**A API está disponível online e pode ser acessada através da seguinte URL:**
-[https://db-colaboradores-dnc.onrender.com](https://db-colaboradores-dnc.onrender.com)
+👤 Cadastro de Clientes:
+Permite o registro de novos usuários com a role CLIENTE.
 
-## ✨ Funcionalidades Principais
+🧑‍💼 Cadastro de Colaboradores e Admins:
+Rota protegida, acessível apenas por administradores (ADMIN).
 
-- **Cadastro de Clientes:** Rota pública para registro de novos usuários com a role `CLIENTE`.
-- **Cadastro de Colaboradores/Admins:** Rota protegida, acessível apenas por administradores, para registrar novos `COLABORADOR`es ou `ADMIN`s.
-- **Autenticação Segura:** Login unificado para clientes, colaboradores e admins, retornando um token JWT.
-- **Autorização Baseada em Roles:** Middlewares que protegem rotas específicas para que apenas administradores logados possam acessá-las (`isAuthenticated` e `isAdmin`).
-- **Gerenciamento de Colaboradores (CRUD - Admin Only):**
-  - Listar todos os colaboradores, com opção de filtrar por cargo (`?cargo=...`).
-  - Atualizar informações específicas (cargo, telefone, status).
-  - Deletar colaboradores.
-- **Tratamento de Erros Centralizado:** Middleware que captura erros da aplicação e retorna respostas padronizadas.
-- **Estrutura Organizada:** Separação de responsabilidades em Controllers, Services e Repositories.
+🔐 Autenticação Segura:
+Login unificado com geração de token JWT.
 
-## 🚀 Tecnologias Utilizadas
+🧱 Autorização Baseada em Roles:
+Middlewares que garantem o acesso apenas a usuários autorizados (isAuthenticated, isAdmin).
 
-- **Backend:** Node.js, Express.js
-- **Banco de Dados:** MySQL
-- **ORM:** Prisma
-- **Autenticação:** JWT (jsonwebtoken), bcryptjs (para hash de senha)
-- **Validação/Utilitários:** express-async-errors, cors, dotenv
-- **Gerenciador de Pacotes:** Yarn
+🗂️ Gerenciamento de Colaboradores (CRUD):
 
-## 🔧 Pré-requisitos
+Listagem com filtros (ex: ?cargo=...);
 
-Antes de começar, você precisará ter instalado em sua máquina:
+Atualização de dados (cargo, telefone, status etc.);
 
-- [Node.js](https://nodejs.org/) (versão 16 ou superior recomendada)
-- [Yarn](https://yarnpkg.com/) (gerenciador de pacotes)
-- Uma instância do [MySQL](https://www.mysql.com/) rodando (localmente ou na nuvem)
+Exclusão de registros.
 
-## ⚙️ Instalação e Configuração
+⚙️ Tratamento Centralizado de Erros:
+Middleware dedicado para respostas padronizadas e controle de exceções.
 
-1.  **Clone o repositório:**
-    ```bash
-    git clone [https://github.com/NatanPantoja/db_colaboradores_dnc.git](https://github.com/NatanPantoja/db_colaboradores_dnc.git)
-    ```
-2.  **Navegue até o diretório do projeto:**
-    ```bash
-    cd db_colaboradores_dnc
-    ```
-3.  **Instale as dependências:**
-    ```bash
-    yarn install
-    ```
-4.  **Configure as Variáveis de Ambiente:**
+🧭 Arquitetura Organizada:
+Estruturada em Controllers, Services e Repositories.
 
-    - Crie um arquivo chamado `.env` na raiz do projeto.
-    - Copie o conteúdo do arquivo `.env.example` (se existir) ou adicione as seguintes variáveis:
-      ```env
-      # Exemplo de .env
-      DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE_NAME?sslaccept=strict" # Adapte com sua URL de conexão MySQL
-      JWT_SECRET="SUA_CHAVE_SECRETA_PARA_JWT_AQUI" # Crie uma chave secreta forte
-      ```
-    - **Importante:** Substitua `USER`, `PASSWORD`, `HOST`, `PORT`, `DATABASE_NAME` pelos dados do seu banco MySQL. Se estiver usando o Aiven, use `?sslaccept=strict` no final.
+🛠️ Tecnologias Utilizadas
+Categoria Tecnologias
+Linguagem / Runtime Node.js
+Framework Express.js
+Banco de Dados MySQL
+ORM Prisma
+Autenticação JWT (jsonwebtoken), bcryptjs
+Utilitários express-async-errors, cors, dotenv
+Gerenciador de Pacotes Yarn
+🗄️ Estrutura do Banco de Dados (Prisma)
 
-5.  **Execute as Migrations do Banco de Dados:**
-    Este comando criará as tabelas (`users`, `colaboradores`) no seu banco de dados com base no `schema.prisma`.
-    ```bash
-    npx prisma migrate dev
-    ```
+A modelagem foi feita com o Prisma ORM, conforme o arquivo schema.prisma:
 
-## ▶️ Rodando a Aplicação (Modo Desenvolvimento)
+enum Role {
+ADMIN
+COLABORADOR
+CLIENTE
+}
 
-Para iniciar o servidor em modo de desenvolvimento (com `nodemon` para reiniciar automaticamente):
+model User {
+id String @id @default(uuid())
+name String
+email String @unique
+password String
+phone String?
+role Role @default(CLIENTE)
+createdAt DateTime @default(now()) @map("created_at")
+updatedAt DateTime @updatedAt @map("updated_at")
 
-```bash
-yarn run dev
-```
+passwordResetToken String?
+passwordResetExpires DateTime?
+
+@@map("users")
+}
+
+model Colaborador {
+id String @id @default(uuid())
+name String
+cpf String @unique
+email String @unique
+password String
+avatar String?
+role Role @default(COLABORADOR)
+telefone String?
+cargo String?
+dataAdmissao DateTime?
+salario Float?
+status String? @default("ativo")
+endereco String?
+cidade String?
+estado String?
+cep String?
+createdAt DateTime @default(now()) @map("created_at")
+updatedAt DateTime @updatedAt @map("updated_at")
+
+@@map("colaboradores")
+}
+
+⚙️ Como Executar o Projeto Localmente
+
+# Clone o repositório
+
+git clone https://github.com/SEU_USUARIO/DB_colaboradores_DNC.git
+
+# Acesse a pasta
+
+cd DB_colaboradores_DNC
+
+# Instale as dependências
+
+yarn install
+
+# Configure as variáveis de ambiente
+
+cp .env.example .env
+
+# edite o arquivo .env com suas credenciais do banco
+
+# Execute as migrations do Prisma
+
+npx prisma migrate dev
+
+# Inicie o servidor
+
+yarn dev
+
+💡 A API será executada em:
+http://localhost:3000
+
+🔒 Rotas Principais
+Método Rota Descrição
+POST /register Cadastro de cliente
+POST /login Autenticação (JWT)
+POST /colaboradores Cadastro de colaborador (admin)
+GET /colaboradores Listagem de colaboradores
+PUT /colaboradores/:id Atualização de dados
+DELETE /colaboradores/:id Remoção de colaborador
+📦 Estrutura de Pastas (Exemplo)
+src/
+├─ controllers/
+├─ services/
+├─ repositories/
+├─ middlewares/
+├─ routes/
+├─ prisma/
+├─ server.js
+└─ app.js
