@@ -8,7 +8,6 @@ class AppError {
   }
 }
 
-// O middleware que vai capturar e tratar todos os erros
 const errorHandler = (error, request, response, next) => {
   console.error(error);
 
