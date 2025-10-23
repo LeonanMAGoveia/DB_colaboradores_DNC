@@ -1,77 +1,79 @@
-🚀 DB Colaboradores DNC - API REST para Gestão de RH
+# API de Gestão de Colaboradores - Projeto DNC
 
-Uma API RESTful desenvolvida com o objetivo de modernizar a gestão de colaboradores de uma empresa de software.
-O projeto utiliza Node.js e Express para o backend, MySQL como banco de dados e Prisma como ORM, garantindo uma solução robusta e escalável.
+## 📝 Sobre o Projeto
 
-💡 Visão Geral do Projeto
+Esta API REST foi desenvolvida como parte do desafio do curso DNC. O objetivo principal é fornecer uma solução centralizada e automatizada para o cadastro e controle de colaboradores e clientes, substituindo processos descentralizados e manuais.
 
-Este projeto tem como objetivo centralizar e automatizar o processo de cadastro, consulta, atualização e exclusão de informações de colaboradores.
-A API atua como a fonte única de verdade (Single Source of Truth) para os dados de RH, substituindo métodos manuais por uma interface segura e padronizada.
+A API permite o cadastro, consulta, atualização e exclusão de informações, com controle de acesso baseado em roles (funções), garantindo segurança e integridade dos dados.
 
-🎯 Objetivos Atendidos:
+**A API está disponível online e pode ser acessada através da seguinte URL:**
+[https://db-colaboradores-dnc.onrender.com](https://db-colaboradores-dnc.onrender.com)
 
-Agilidade e Eficiência: Processos de cadastro e atualização mais rápidos e automatizados.
+## ✨ Funcionalidades Principais
 
-Consistência de Dados: Redução de erros manuais e inconsistências através de validações na API.
+- **Cadastro de Clientes:** Rota pública para registro de novos usuários com a role `CLIENTE`.
+- **Cadastro de Colaboradores/Admins:** Rota protegida, acessível apenas por administradores, para registrar novos `COLABORADOR`es ou `ADMIN`s.
+- **Autenticação Segura:** Login unificado para clientes, colaboradores e admins, retornando um token JWT.
+- **Autorização Baseada em Roles:** Middlewares que protegem rotas específicas para que apenas administradores logados possam acessá-las (`isAuthenticated` e `isAdmin`).
+- **Gerenciamento de Colaboradores (CRUD - Admin Only):**
+  - Listar todos os colaboradores, com opção de filtrar por cargo (`?cargo=...`).
+  - Atualizar informações específicas (cargo, telefone, status).
+  - Deletar colaboradores.
+- **Tratamento de Erros Centralizado:** Middleware que captura erros da aplicação e retorna respostas padronizadas.
+- **Estrutura Organizada:** Separação de responsabilidades em Controllers, Services e Repositories.
 
-Centralização: Criação de um sistema único e central para gestão de informações.
+## 🚀 Tecnologias Utilizadas
 
-Escalabilidade: Arquitetura RESTful preparada para atender futuras demandas de integração.
+- **Backend:** Node.js, Express.js
+- **Banco de Dados:** MySQL
+- **ORM:** Prisma
+- **Autenticação:** JWT (jsonwebtoken), bcryptjs (para hash de senha)
+- **Validação/Utilitários:** express-async-errors, cors, dotenv
+- **Gerenciador de Pacotes:** Yarn
 
-🛠️ Tecnologias Utilizadas
+## 🔧 Pré-requisitos
 
-A aplicação é construída com uma stack moderna e eficiente:
+Antes de começar, você precisará ter instalado em sua máquina:
 
-Backend: Node.js
+- [Node.js](https://nodejs.org/) (versão 16 ou superior recomendada)
+- [Yarn](https://yarnpkg.com/) (gerenciador de pacotes)
+- Uma instância do [MySQL](https://www.mysql.com/) rodando (localmente ou na nuvem)
 
-Framework: Express.js
+## ⚙️ Instalação e Configuração
 
-Banco de Dados: MySQL
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/NatanPantoja/db_colaboradores_dnc.git](https://github.com/NatanPantoja/db_colaboradores_dnc.git)
+    ```
+2.  **Navegue até o diretório do projeto:**
+    ```bash
+    cd db_colaboradores_dnc
+    ```
+3.  **Instale as dependências:**
+    ```bash
+    yarn install
+    ```
+4.  **Configure as Variáveis de Ambiente:**
 
-ORM: Prisma (para acesso e gerenciamento do DB)
+    - Crie um arquivo chamado `.env` na raiz do projeto.
+    - Copie o conteúdo do arquivo `.env.example` (se existir) ou adicione as seguintes variáveis:
+      ```env
+      # Exemplo de .env
+      DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE_NAME?sslaccept=strict" # Adapte com sua URL de conexão MySQL
+      JWT_SECRET="SUA_CHAVE_SECRETA_PARA_JWT_AQUI" # Crie uma chave secreta forte
+      ```
+    - **Importante:** Substitua `USER`, `PASSWORD`, `HOST`, `PORT`, `DATABASE_NAME` pelos dados do seu banco MySQL. Se estiver usando o Aiven, use `?sslaccept=strict` no final.
 
-Gerenciador de Pacotes: Yarn
+5.  **Execute as Migrations do Banco de Dados:**
+    Este comando criará as tabelas (`users`, `colaboradores`) no seu banco de dados com base no `schema.prisma`.
+    ```bash
+    npx prisma migrate dev
+    ```
 
-📋 Endpoints da API
+## ▶️ Rodando a Aplicação (Modo Desenvolvimento)
 
-A API oferece os seguintes endpoints de gestão para o recurso /api/colaboradores:
+Para iniciar o servidor em modo de desenvolvimento (com `nodemon` para reiniciar automaticamente):
 
-(a verificar)
-
-Método HTTP Endpoint Descrição
-POST /api/colaboradores Cadastra um novo colaborador.                                                                                                                                                          
-
-GET /api/colaboradores Lista todos os colaboradores cadastrados.
-
-GET /api/colaboradores/:id Retorna os detalhes de um colaborador específico.
-
-PUT /api/colaboradores/:id Atualiza todas as informações de um colaborador.
-
-DELETE /api/colaboradores/:id Exclui um colaborador do sistema.
-
-🗂️ Estrutura de Arquivos
-
-O projeto segue o padrão Controller/Service para melhor organização e separação de responsabilidades:
-
-DB_COLABORADORES_DNC/
-
-├── prisma/
-
-│ └── schema.prisma # Definição do modelo de dados
-
-├── src/
-
-│ ├── controller/ # Lógica de processamento das requisições HTTP.
-
-│ ├── service/ # Lógica de negócio e manipulação de dados via Prisma.
-
-│ ├── prisma.js # Configuração do cliente Prisma.
-
-│ ├── router.js # Definição das rotas da API.
-
-│ └── server.js # Ponto de entrada e inicialização do servidor Express.
-
-├── .env # Variáveis de ambiente
-
-└── package.json # Dependências e scripts
-
+```bash
+yarn run dev
+```
