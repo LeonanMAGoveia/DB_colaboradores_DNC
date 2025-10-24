@@ -122,7 +122,7 @@ npx prisma migrate dev
 yarn dev
 
 💡 A API será executada em:
-http://localhost:3000
+http://localhost:10000
 
 🔒 Rotas Principais<br>
 Método Rota Descrição<br>
